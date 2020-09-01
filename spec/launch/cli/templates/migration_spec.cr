@@ -18,10 +18,11 @@ module Launch::CLI
         migration = MigrationSpecHelper.sample_migration_for(Migration)
         migration_text = MigrationSpecHelper.text_for(migration)
 
-        it "should contain correct CREATE TABLE statement" do
-          create_table_sql = MigrationSpecHelper.sample_migration_create_table_sql_pg
-          migration_text.should contain create_table_sql
-        end
+        pending("should contain correct CREATE TABLE statement")
+        # it "should contain correct CREATE TABLE statement" do
+        #   create_table_sql = MigrationSpecHelper.sample_migration_create_table_sql_pg
+        #   migration_text.should contain create_table_sql
+        # end
 
         it "should contain correct CREATE INDEX statement" do
           create_index_sql = MigrationSpecHelper.sample_migration_create_index_sql
