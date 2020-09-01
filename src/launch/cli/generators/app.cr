@@ -19,7 +19,7 @@ module Launch::CLI
     def initialize(@name, @database = "sqlite", @language = "ecr", @minimal = false)
       @db_url = ""
       @wait_for = ""
-      @model = "granite" # TODO?
+      @model = "jennifer"
       @database_name = generate_database_name
       @author = fetch_author
       @email = fetch_email
