@@ -1,13 +1,12 @@
-class <%= class_name %> < ApplicationRecord
+class <%= class_name %> < ApplicationModel
   with_timestamps
   mapping(
-    id: Primary32
+    id: Primary32,
 <% @fields.reject{|f| f.hidden || f.reference? }.each do |field| -%>
-    <%= field.name %>: { <%= field.cr_type %>? }
+    <%= field.name %>: { type: <%= field.cr_type %>? },
 <% end -%>
-    # TODO:
-    # created_at: Time?,
-    # updated_at: Time?
+    created_at: { type: Time? },
+    updated_at: { type: Time? }
   )
   
 <% @fields.select{|f| f.reference? }.each do |field| %>

@@ -14,7 +14,7 @@ module Launch::CLI
     end
 
     it "launch new #{TESTING_APP}" do
-      ENV["AMBER_ENV"] = "test"
+      ENV["LAUNCH_ENV"] = "test"
 
       scaffold_app(TESTING_APP)
       camel_case = "PostComment"
@@ -28,13 +28,13 @@ module Launch::CLI
       [camel_case, snake_case].each do |arg|
         MainCommand.run ["generate", "model", "-y", arg]
         filename = snake_case
-        granite_table_name = "table #{snake_case}s"
+        jennifer_table_name = "#{camel_case} < ApplicationModel"
         src_filepath = "./src/models/#{filename}.cr"
         spec_filepath = "./spec/models/#{filename}_spec.cr"
         File.exists?(src_filepath).should be_true
         File.exists?(spec_filepath).should be_true
         File.read(src_filepath).should contain class_definition_prefix
-        File.read(src_filepath).should contain granite_table_name
+        File.read(src_filepath).should contain jennifer_table_name
         File.read(spec_filepath).should contain spec_definition_prefix
         File.delete(src_filepath)
         File.delete(spec_filepath)
@@ -43,7 +43,7 @@ module Launch::CLI
     end
 
     it "launch new #{TESTING_APP} --minimal" do
-      ENV["AMBER_ENV"] = "test"
+      ENV["LAUNCH_ENV"] = "test"
 
       scaffold_app(TESTING_APP, "--minimal")
       camel_case = "PostComment"
@@ -59,13 +59,13 @@ module Launch::CLI
       [camel_case, snake_case].each do |arg|
         MainCommand.run ["generate", "model", "-y", arg]
         filename = snake_case
-        granite_table_name = "table #{snake_case}s"
+        jennifer_timestamps = "with_timestamps"
         src_filepath = "./src/models/#{filename}.cr"
         spec_filepath = "./spec/models/#{filename}_spec.cr"
         File.exists?(src_filepath).should be_true
         File.exists?(spec_filepath).should be_true
         File.read(src_filepath).should contain class_definition_prefix
-        File.read(src_filepath).should contain granite_table_name
+        File.read(src_filepath).should contain jennifer_timestamps
         File.read(spec_filepath).should contain spec_definition_prefix
         File.delete(src_filepath)
         File.delete(spec_filepath)

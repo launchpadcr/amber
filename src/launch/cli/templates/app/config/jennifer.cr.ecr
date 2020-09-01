@@ -1,11 +1,13 @@
-require "amber"
-require "colorize"
+require "log"
+require "jennifer"
+require "jennifer_sqlite3_adapter"
+# require "jennifer/adapter/postgres" # for PostgreSQL
+# require "jennifer/adapter/mysql" for MySQL
+
+APP_ENV = ENV["LAUNCH_ENV"]? || "development"
+Jennifer::Config.read("config/database.yml", APP_ENV)
+Jennifer::Config.from_uri(ENV["DATABASE_URI"]) if ENV.has_key?("DATABASE_URI")
 
 Jennifer::Config.configure do |conf|
-  conf.logger = Logger.new(STDOUT)
-
-  conf.logger.formatter = Logger::Formatter.new do |severity, datetime, progname, message, io|
-    io << datetime.colorize(:cyan) << ": \n" << message.colorize(:light_magenta)
-  end
-  conf.logger.level = Logger::DEBUG
+  conf.logger.level = APP_ENV == "development" ? Log::Severity::Debug : Log::Severity::Error
 end

@@ -16,7 +16,7 @@ end
 module CLIHelper
   BASE_ENV_PATH       = "./config/environments/"
   ENV_CONFIG_PATH     = "#{TESTING_APP}/config/environments/"
-  CURRENT_ENVIRONMENT = ENV["AMBER_ENV"] ||= "test"
+  CURRENT_ENVIRONMENT = ENV["LAUNCH_ENV"] ||= "test"
   ENVIRONMENTS        = %w(development test)
 
   def cleanup
