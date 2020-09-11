@@ -95,14 +95,16 @@ module Launch::CLI
           scaffold_app(TESTING_APP, "-d", db)
           set_dir
           %w(development test).each do |env|
-            db_key = db == "sqlite" ? "sqlite3" : db
-            db_url = environment_yml(env)["database_url"].as_s
+            db_key = db == "sqlite" ? "jennifer_sqlite3_adapter" : db
+            db_adapter = database_yml(env)["adapter"].as_s
 
             # "sets #{db} shards dependencies"
             shard_yml["dependencies"][db_key].should_not be_nil
 
+            db_key = db == "sqlite" ? "sqlite3" : db
+
             # "has correct database connection string"
-            db_url.should eq expected_db_url(db_key, env)
+            db_adapter.should eq db_key
           end
         end
       end

@@ -18,6 +18,7 @@ module CLIHelper
   ENV_CONFIG_PATH     = "#{TESTING_APP}/config/environments/"
   CURRENT_ENVIRONMENT = ENV["LAUNCH_ENV"] ||= "test"
   ENVIRONMENTS        = %w(development test)
+  DATABASE_PATH       = "#{TESTING_APP}/config/"
 
   def cleanup
     Dir.cd CURRENT_DIR
@@ -71,6 +72,10 @@ module CLIHelper
 
   def environment_yml(environment : String, path = ENV_CONFIG_PATH)
     YAML.parse(File.read("#{path}#{environment}.yml"))
+  end
+
+  def database_yml(environment : String, path = DATABASE_PATH)
+    YAML.parse(File.read("#{path}database.yml"))[environment]
   end
 
   def development_yml
