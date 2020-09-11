@@ -78,8 +78,10 @@ module Launch::CLI
         "postgres"
       when "sqlite"
         "sqlite3"
-      else
+      when "mysql"
         "mysql"
+      else
+        @database
       end
     end
   end
