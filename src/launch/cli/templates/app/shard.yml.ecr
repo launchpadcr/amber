@@ -36,19 +36,10 @@ dependencies:
     github: amberframework/jasper-helpers
     version: ~> 0.2.5
 
-<% case @database when "pg" -%>
-  pg:
-    github: will/crystal-pg
-    version: ~> 0.21.1
-<% when "mysql" -%>
-  mysql:
-    github: crystal-lang/crystal-mysql
-    version: ~> 0.11.1
-<% when "sqlite" -%>
+<% if @database == "sqlite" -%>
   jennifer_sqlite3_adapter:
     github: imdrasil/jennifer_sqlite3_adapter
     version: 0.3.0
-<% else -%>
 <% end -%>
 
   citrine-i18n:
