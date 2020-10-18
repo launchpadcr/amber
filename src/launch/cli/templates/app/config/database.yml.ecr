@@ -1,5 +1,5 @@
 defaults: &defaults
-  host: ""
+  host: <%= @adapter_name == "sqlite3" ? "\".\"" : "localhost" %>
   adapter: <%= @adapter_name %>
   user: ""
   password: ""
