@@ -36,13 +36,22 @@ module Launch::Environment
     describe "#static_file_server" do
       it "sets default headers value as empty map" do
         test_yaml = File.read(File.expand_path("./spec/support/config/development.yml"))
+<<<<<<< HEAD:spec/launch/environment/settings_spec.cr
         settings = Launch::Settings.from_yaml(test_yaml)
         settings.pipes.dig?("static", "headers").should eq({} of String => Launch::Settings::SettingValue)
+=======
+        settings = Amber::Settings.from_yaml(test_yaml)
+        settings.pipes.dig?("static", "headers").should eq({} of String => Amber::Settings::SettingValue)
+>>>>>>> af59a3805bafe48c303621f2a2e2df056e2cdc60:spec/amber/environment/settings_spec.cr
       end
 
       it "sets header file settings from environment yaml file" do
         test_yaml = File.read(File.expand_path("./spec/support/config/with_static_pipe_settings.yml"))
+<<<<<<< HEAD:spec/launch/environment/settings_spec.cr
         settings = Launch::Settings.from_yaml(test_yaml)
+=======
+        settings = Amber::Settings.from_yaml(test_yaml)
+>>>>>>> af59a3805bafe48c303621f2a2e2df056e2cdc60:spec/amber/environment/settings_spec.cr
         settings.pipes.dig?("static", "headers").should eq({"Cache-Control" => "private, max-age=7200"})
       end
     end
