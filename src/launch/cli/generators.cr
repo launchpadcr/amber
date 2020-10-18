@@ -287,6 +287,7 @@ class Teeplate::RenderingEntry
   end
 end
 
+# :nodoc:
 module Teeplate
   abstract class FileTree
     @name_plural : String?

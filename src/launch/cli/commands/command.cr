@@ -1,3 +1,4 @@
+# :nodoc:
 abstract class Command < Cli::Command
   Log = ::Log.for(self)
 

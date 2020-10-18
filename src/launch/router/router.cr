@@ -1,6 +1,7 @@
 require "amber_router"
 require "./scope"
 
+# :nodoc:
 module Amber
   module Router
     # This is the main application handler all routers should finally hit this handler.

@@ -2,6 +2,7 @@ require "cli"
 require "yaml"
 require "./process_runner"
 
+# :nodoc:
 module Sentry
   class SentryCommand < Cli::Command
     command_name "sentry"
