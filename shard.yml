@@ -34,9 +34,13 @@ dependencies:
     github: TechMagister/liquid.cr
     version: ~> 0.3.3
 
-  micrate:
-    github: amberframework/micrate
-    version: ~> 0.8.0
+  jennifer:
+    github: imdrasil/jennifer.cr
+    branch: master
+
+  jennifer_sqlite3_adapter:
+    github: imdrasil/jennifer_sqlite3_adapter
+    version: "~> 0.3.0"
 
   pg:
     github: will/crystal-pg
