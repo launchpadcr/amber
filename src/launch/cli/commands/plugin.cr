@@ -22,8 +22,8 @@ module Launch::CLI
         uninstall_plugin?
         ensure_name_argument!
 
-        if Amber::Plugins::Plugin.can_generate?(args.name)
-          template = Amber::Plugins::Plugin.new(args.name, "./src/plugins")
+        if Launch::Plugins::Plugin.can_generate?(args.name)
+          template = Launch::Plugins::Plugin.new(args.name, "./src/plugins")
           template.generate (options.uninstall? ? "uninstall" : "install")
         end
       end

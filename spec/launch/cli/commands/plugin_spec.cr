@@ -1,6 +1,6 @@
 require "../../../spec_helper"
 
-module Amber::Plugins
+module Launch::Plugins
   describe Plugin do
     describe "#can_generate?" do
       Spec.before_each do
