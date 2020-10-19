@@ -34,10 +34,6 @@ dependencies:
     github: TechMagister/liquid.cr
     version: ~> 0.3.3
 
-  micrate:
-    github: amberframework/micrate
-    version: ~> 0.8.0
-
   pg:
     github: will/crystal-pg
     version: ~> 0.21.1

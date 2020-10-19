@@ -27,6 +27,12 @@ module CLIHelper
     end
   end
 
+  def prepare_test_app_with_deps
+    cleanup
+    scaffold_app_with_deps(TESTING_APP, "-d", "sqlite")
+    environment_yml(CURRENT_ENVIRONMENT, "#{Dir.current}/config/environments/")
+  end
+
   def prepare_test_app
     cleanup
     scaffold_app(TESTING_APP, "-d", "sqlite")
@@ -116,6 +122,12 @@ module CLIHelper
 
   def scaffold_app(app_name, *options)
     Launch::CLI::MainCommand.run ["new", app_name, "-y", "--no-deps"] | options.to_a
+    Dir.cd(app_name)
+    prepare_yaml(Dir.current)
+  end
+
+  def scaffold_app_with_deps(app_name, *options)
+    Launch::CLI::MainCommand.run ["new", app_name, "-y", ""] | options.to_a
     Dir.cd(app_name)
     prepare_yaml(Dir.current)
   end

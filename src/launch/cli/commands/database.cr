@@ -1,14 +1,12 @@
-require "micrate"
-require "pg"
-require "mysql"
-require "sqlite3"
-
 module Launch::CLI
   Log = ::Log.for("database")
 
   class MainCommand < ::Cli::Supercommand
     command "db", aliased: "database"
 
+    # Handles database operations. Due to how jennifer migrations work, instead
+    # of calling methods directly, Process.run is utilized. A sam.cr file exists
+    # in the users project which is ran with the proper commands.
     class Database < Command
       command_name "database"
       MIGRATIONS_DIR        = "./db/migrations"
@@ -16,133 +14,134 @@ module Launch::CLI
 
       class Options
         arg_array "commands", desc: "drop create migrate rollback redo status version seed"
+        string ["-s", "--step"], desc: "how many steps to migrate or rollback", default: ""
+        string ["-v", "--version"], desc: "database version to rollback too", default: ""
         bool "--no-color", desc: "disable colored output", default: false
         help
       end
 
       class Help
         header <<-EOS
-          Performs database migrations and maintenance tasks. Powered by micrate (https://github.com/juanedi/micrate)
+          Performs database migrations and maintenance tasks.
 
         Commands:
           drop      drops the database
           create    creates the database
-          migrate   migrate the database to the most recent version available
+          migrate   migrate the database to the most recent version available or by steps
           rollback  roll back the database version by 1
-          redo      re-run the latest database migration
-          status    dump the migration status for the current database
+          load      loads the database with a schema
           version   print the current version of the database
           seed      initialize the database with seed data
+          setup     runs create, migrate and seed
         EOS
         caption "performs database migrations and maintenance tasks"
       end
 
       def run
         CLI.toggle_colors(options.no_color?)
-        connect_to_database if args.commands.empty?
-
         process_commands(args.commands)
-      rescue e : Micrate::UnorderedMigrationsException
-        exit! Micrate::Cli.report_unordered_migrations(e.versions), error: true
-      rescue e : DB::ConnectionRefused
-        exit! "Connection unsuccessful: #{Micrate::DB.connection_url.colorize(:light_blue)}", error: true
       rescue e : Exception
         exit! e.message, error: true
       end
 
       private def process_commands(commands)
+        File.write(sam_file_directory, sam_file_content) unless File.exists?(sam_file_directory)
         commands.each do |command|
-          Micrate::DB.connection_url = database_url
           case command
           when "drop"
             drop_database
           when "create"
             create_database
-          when "seed"
-            Helpers.run("crystal db/seeds.cr", wait: true, shell: true)
-            info "Seeded database"
           when "migrate"
             migrate
+          when "seed"
+            seed
           when "rollback"
-            Micrate::Cli.run_down
-          when "redo"
-            Micrate::Cli.run_redo
-          when "status"
-            Micrate::Cli.run_status
+            rollback
+          when "load"
+            schema_load
+          when "setup"
+            setup
           when "version"
-            Micrate::Cli.run_dbversion
-          when "connect"
-            connect_to_database
+            version
           else
+            # TODO: Undecided if Launch should leave the file
+            # in the users directory or remove it. There is
+            # no major performance hit for generating it at runtime.
+            # File.delete("#{sam_file_directory}")
             exit! help: true, error: false
           end
         end
+        # File.delete("#{sam_file_directory}")
       end
 
       private def migrate
-        Micrate::Cli.run_up
-      rescue e : IndexError
-        exit! "No migrations to run in #{MIGRATIONS_DIR}."
+        info "Migrating Database"
+        if options.step.empty?
+          Helpers.run("crystal #{sam_file_directory} db:migrate", wait: true, shell: true)
+        else
+          Helpers.run("crystal #{sam_file_directory} db:step #{options.step}", wait: true, shell: true)
+        end
       end
 
       private def drop_database
-        url = Micrate::DB.connection_url.to_s
-        if url.starts_with? "sqlite3:"
-          path = url.gsub("sqlite3:", "")
-          File.delete(path)
-          info "Deleted file #{path}"
-        else
-          name = set_database_to_schema url
-          Micrate::DB.connect do |db|
-            db.exec "DROP DATABASE IF EXISTS #{name};"
-          end
-          info "Dropped database #{name}"
-        end
+        info "Dropping database"
+        Helpers.run("crystal #{sam_file_directory} db:drop", wait: true, shell: true)
       end
 
       private def create_database
-        url = Micrate::DB.connection_url.to_s
-        if url.starts_with? "sqlite3:"
-          info CREATE_SQLITE_MESSAGE
+        info "Creating database"
+        Helpers.run("crystal #{sam_file_directory} db:create", wait: true, shell: true)
+      end
+
+      private def seed
+        info "Seeding database"
+        Helpers.run("crystal db/seeds.cr", wait: true, shell: true)
+        info "Database has been seeded"
+      end
+
+      private def rollback
+        if !options.version.empty?
+          info "Rolling back database to version #{options.version}"
+          Helpers.run("crystal #{sam_file_directory} db:rollback v=#{options.version}", wait: true, shell: true)
+        elsif options.step.empty? || options.step == "1"
+          info "Rolling back database 1 step"
+          Helpers.run("crystal #{sam_file_directory} db:rollback 1", wait: true, shell: true)
         else
-          name = set_database_to_schema url
-          Micrate::DB.connect do |db|
-            db.exec "CREATE DATABASE #{name};"
-          end
-          info "Created database #{name}"
+          info "Rolling back database #{options.step} steps"
+          Helpers.run("crystal #{sam_file_directory} db:rollback #{options.step}", wait: true, shell: true)
         end
       end
 
-      private def set_database_to_schema(url)
-        uri = URI.parse(url)
-        if path = uri.path
-          Micrate::DB.connection_url = url.gsub(path, "/#{uri.scheme}")
-          path.gsub("/", "")
-        else
-          error "Could not determine database name"
-        end
+      private def schema_load
+        info "Loading Schema"
+        Helpers.run("crystal #{sam_file_directory} db:schema:load #{options.step}", wait: true, shell: true)
       end
 
-      private def connect_to_database
-        Process.exec(command_line_tool, {database_url}) if database_url
-        exit! error: false
+      private def setup
+        create_database
+        migrate
+        seed
       end
 
-      private def command_line_tool
-        case Launch::CLI.config.database
-        when "pg"
-          "psql"
-        when "mysql"
-          "mysql"
-        when "sqlite"
-          "sqlite3"
-        else
-          exit! "invalid database configuration", error: true
-        end
+      private def version
+        Helpers.run("crystal #{sam_file_directory} db:version", wait: true, shell: true)
       end
 
-      private def database_url
-        ENV["DATABASE_URL"]? || CLI.settings.database_url
+      private def sam_file_content
+        "# This file is autogenerated.\n" +
+          "# It is used for Jennifer database operations.\n" +
+          "# Please do not modify.\n\n" +
+          "require \"./config/jennifer\"\n" +
+          "require \"./db/migrations/*\"\n" +
+          "require \"sam\"\n" +
+          "require \"jennifer/sam\"\n" +
+          "load_dependencies \"jennifer\"\n" +
+          "Sam.help"
+      end
+
+      private def sam_file_directory
+        "#{Dir.current}/sam.cr"
       end
     end
   end

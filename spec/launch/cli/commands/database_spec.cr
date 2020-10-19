@@ -25,13 +25,14 @@ module Launch::CLI
         end
 
         it "creates the database when db migrate" do
-          env_yml = prepare_test_app
+          env_yml = prepare_test_app_with_deps
           CLI.settings.database_url = env_yml["database_url"].to_s
 
           MainCommand.run ["generate", "model", "-y", "Post"]
           MainCommand.run ["db", "migrate"]
 
-          db_filename = CLI.settings.database_url.to_s.gsub("sqlite3:", "")
+          db_filename = CLI.settings.database_url.to_s.gsub("sqlite3:./db/", "./")
+          db_filename = db_filename.split(".db")[0]
           File.exists?(db_filename).should be_true
           File.info(db_filename).size.should_not eq 0
           cleanup
