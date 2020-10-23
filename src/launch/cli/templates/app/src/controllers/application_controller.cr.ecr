@@ -1,10 +1,11 @@
-require "jasper_helpers"
-
 class ApplicationController < Launch::Controller::Base
-  include JasperHelpers
-  <%- if @minimal -%>
-  LAYOUT = false
-  <%- else -%>
-  LAYOUT = "application.<%= @language %>"
-  <%- end -%>
+  LAYOUT = nil
+
+  macro render_js(function = nil, folder = __FILE__)
+    {% root = folder.split("src")[0] %}
+    stdout = IO::Memory.new
+    Process.run("npx babel-node #{{{ root }}}render.js #{context.request.resource}", shell: true, output: stdout)
+    content = stdout.to_s
+    render("pages/index.ecr", path: "src", layout: nil)
+  end
 end

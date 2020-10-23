@@ -1,0 +1,54 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+
+function <%= class_name %>({ <%= name_plural %> }) {
+
+  return (
+    <>
+      <div className="row">
+        <div className="col-sm-11">
+          <h2><%= display_name_plural %></h2>
+        </div>
+        <div className="col-sm-1">
+          <a className="btn btn-success btn-sm" href="/pets/new">New</a>
+        </div>
+      </div>
+
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+<% @fields.reject{|f| f.hidden }.each do |field| -%>
+              <th><%= field.name.capitalize %></th>
+<% end -%>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {<%= name_plural %>.map((pet) => {
+              return (
+                <tr>
+<% @fields.reject{|f| f.hidden }.each do |field| -%>
+                  <td>{<%= @name %>.<%= field.name %>}<% if field.reference? %>.id<% end %></td>
+<% end -%>
+                  <td key={<%= @name %>.id}>
+                    <span>
+                      <button className="btn btn-info btn-sm" to={`/<%= name_plural %>/${<%= @name %>.id}`}>Show</button>
+                      <button to={`/<%= name_plural %>/${<%= @name %>.id}/edit`} className="btn btn-success btn-sm">Edit</button>
+                      <button to={`/<%= name_plural %>/${<%= @name %>.id}`} className="btn btn-danger btn-sm">Delete</button>
+                    </span>
+                  </td>
+                </tr>
+              )
+            })}
+
+          </tbody>
+        </table>
+      </div>
+    </>
+  )
+}
+
+export default <%= class_name %>
