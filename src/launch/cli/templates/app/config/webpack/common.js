@@ -4,7 +4,7 @@ const path = require('path');
 let config = {
   entry: {
     'main.bundle.js': path.resolve(__dirname, '../../src/pages/_app.js'),
-    'main.bundle.css': path.resolve(__dirname, '../../src/styles/globals.scss'),
+    'main.bundle.css': path.resolve(__dirname, '../../src/assets/styles/globals.scss'),
   },
   output: {
     filename: '[name]',

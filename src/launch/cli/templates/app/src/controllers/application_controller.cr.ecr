@@ -5,7 +5,7 @@ class ApplicationController < Launch::Controller::Base
     {% root = folder.split("src")[0] %}
     output = IO::Memory.new
     error = IO::Memory.new
-    command = "npx babel-node #{{{ root }}}src/utils/render.js #{context.request.resource}"
+    command = "npx babel-node #{{{ root }}}src/pages/_app.js #{context.request.resource}"
     {% if props %}
       command += " '#{{{props}}.to_json}'"
     {% end %}
@@ -18,7 +18,7 @@ class ApplicationController < Launch::Controller::Base
 
     raise "NodeRenderError - #{error}" if error.to_s.includes?("throw err")
 
-    content = output.to_s
-    render("pages/index.ecr", path: "src", layout: nil)
+    index = File.read("#{Dir.current}/src/pages/index.html")
+    index.gsub("<div id=\"root\"></div>", "<div id=\"root\">#{output}</div>")
   end
 end

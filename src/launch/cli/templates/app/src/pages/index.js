@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import amberLogo from '../images/amberLogo.png';
-import reactLogo from '../images/reactLogo.png';
-import '../styles/Home.module.scss';
+import amberLogo from '../assets/images/amberLogo.png';
+import reactLogo from '../assets/images/reactLogo.png';
+import '../assets/styles/Home.module.scss';
 
 import HelloAmber from '../components/HelloAmber';
 import HelloReact from '../components/HelloReact';

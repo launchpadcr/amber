@@ -1,5 +1,8 @@
 class HomeController < ApplicationController
   def index
+    # The variable passed into `render_js` will be serialized
+    # to json and then passed in to _app at SSR, if no variable
+    # is supplied, no arguments will be passed in at rendering.
     prop = {
       name: "Hello World"
     }
