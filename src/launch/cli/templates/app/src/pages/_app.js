@@ -1,16 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom'
+import Routes from '../utils/routes'
+import { BrowserRouter } from "react-router-dom";
 import '../styles/globals.scss';
 
-import Home from './index';
+// TODO: This ensures all images are avaiable for SSR but it should really be
+// in the staticRouter
+require.context(
+  "../images",
+  true,
+  /\.(gif|jpg|png|svg|jpeg|ico)$/i
+);
 
+function _App() {
+  return (
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
+  )
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  ReactDOM.render((
-    <BrowserRouter>
-      <Route exact path="/" component={Home} />
-      {/* <Route component={Error} /> */}
-    </BrowserRouter>
-  ), document.getElementById('root'));
+  ReactDOM.render(_App(), document.getElementById('root'));
 })

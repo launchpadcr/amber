@@ -1,5 +1,8 @@
 class HomeController < ApplicationController
   def index
-    render("layouts/application.ecr", path: "src")
+    prop = {
+      name: "Hello World"
+    }
+    render_js(prop)
   end
 end

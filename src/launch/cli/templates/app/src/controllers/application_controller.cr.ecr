@@ -1,11 +1,24 @@
 class ApplicationController < Launch::Controller::Base
   LAYOUT = nil
 
-  macro render_js(function = nil, folder = __FILE__)
+  macro render_js(props = nil, folder = __FILE__)
     {% root = folder.split("src")[0] %}
-    stdout = IO::Memory.new
-    Process.run("npx babel-node #{{{ root }}}render.js #{context.request.resource}", shell: true, output: stdout)
-    content = stdout.to_s
+    output = IO::Memory.new
+    error = IO::Memory.new
+    command = "npx babel-node #{{{ root }}}src/utils/render.js #{context.request.resource}"
+    {% if props %}
+      command += " '#{{{props}}.to_json}'"
+    {% end %}
+    Process.run(
+      command,
+      shell: true,
+      output: output,
+      error: error
+    )
+
+    raise "NodeRenderError - #{error}" if error.to_s.includes?("throw err")
+
+    content = output.to_s
     render("pages/index.ecr", path: "src", layout: nil)
   end
 end
