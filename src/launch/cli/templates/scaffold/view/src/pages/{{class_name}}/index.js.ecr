@@ -1,8 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import axios from 'axios';
 
+function <%= class_name %>(props) {
+  const [<%= name_plural %>, set<%= class_name %>s] = useState(props.<%= name_plural %>);
 
-function <%= class_name %>({ <%= name_plural %> }) {
+  function handleDelete(e) {
+    e.preventDefault
+    axios.delete(`/pets/${e.target.dataset.id}`)
+      .then(res => {
+        set<%= class_name %>s(res.data.<%= name_plural %>);
+        // TODO: set message
+      })
+  }
 
   return (
     <>
@@ -35,9 +44,15 @@ function <%= class_name %>({ <%= name_plural %> }) {
 <% end -%>
                   <td key={<%= @name %>.id}>
                     <span>
-                      <button className="btn btn-info btn-sm" to={`/<%= name_plural %>/${<%= @name %>.id}`}>Show</button>
-                      <button to={`/<%= name_plural %>/${<%= @name %>.id}/edit`} className="btn btn-success btn-sm">Edit</button>
-                      <button to={`/<%= name_plural %>/${<%= @name %>.id}`} className="btn btn-danger btn-sm">Delete</button>
+                      <a className="btn btn-info btn-sm" href={`/<%= name_plural %>/${<%= @name %>.id}`}>Show</a>
+                      <a href={`/<%= name_plural %>/${<%= @name %>.id}/edit`} className="btn btn-success btn-sm">Edit</a>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={(e) => handleDelete(e)}
+                        data-id={<%= @name %>.id}
+                      >
+                        Delete
+                      </button>
                     </span>
                   </td>
                 </tr>

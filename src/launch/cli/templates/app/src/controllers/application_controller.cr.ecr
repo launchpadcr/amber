@@ -18,7 +18,11 @@ class ApplicationController < Launch::Controller::Base
 
     raise "NodeRenderError - #{error}" if error.to_s.includes?("throw err")
 
-    index = File.read("#{Dir.current}/src/pages/index.html")
-    index.gsub("<div id=\"root\"></div>", "<div id=\"root\">#{output}</div>")
+    html = File.read("#{Dir.current}/src/pages/index.html")
+    html = html.gsub("<div id=\"root\"></div>", "<div id=\"root\">#{output}</div>")
+    html.gsub(
+      "<script src=\"/dist/main.bundle.js\" charset=\"utf-8\"></script>",
+      "<script src=\"/dist/main.bundle.js\" charset=\"utf-8\" id='react-props' data-props='#{{{props}}.to_json}'></script>"
+    )
   end
 end

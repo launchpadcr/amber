@@ -6,20 +6,43 @@ class <%= class_name %>Controller < ApplicationController
   end
 
   def index
-    <%= name_plural %> = <%= class_name %>.all
-    render "index.<%= config.language %>"
+    prop = {
+      <%= name_plural %>: <%= class_name %>.all.to_a,
+    }
+    respond_with do
+      html render_js(prop)
+      json prop.to_json
+    end
   end
 
   def show
-    render "show.<%= config.language %>"
+    prop = {
+      <%= @name %>: <%= @name %>,
+    }
+    respond_with do
+      html render_js(prop)
+      json prop.to_json
+    end
   end
 
   def new
-    render "new.<%= config.language %>"
+    prop = {
+      <%= @name %>: <%= @name %>,
+    }
+    respond_with do
+      html render_js(prop)
+      json prop.to_json
+    end
   end
 
   def edit
-    render "edit.<%= config.language %>"
+    prop = {
+      <%= @name %>: <%= @name %>,
+    }
+    respond_with do
+      html render_js(prop)
+      json prop.to_json
+    end
   end
 
   def create

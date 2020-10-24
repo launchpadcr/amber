@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-import StaticRouter from '../utils/StaticRouter'
 import { renderToString } from 'react-dom/server';
-import App from './App'
+
+import Layout from './_layout'
+
+import '../assets/styles/globals.scss';
 
 // Render your app
 if (typeof document !== 'undefined') {
@@ -20,16 +22,22 @@ if (typeof document !== 'undefined') {
     : ReactDOM.render
 
   const render = Comp => {
+    // Get props written into html from server
+    const reactPropsNode = document.getElementById('react-props')
+    const props = JSON.parse(reactPropsNode.getAttribute('data-props'));
+    // Remove raw props from html
+    delete reactPropsNode.dataset.props
+
     renderMethod(
       <AppContainer>
-        <Comp />
+        <Comp {...props} />
       </AppContainer>,
       target
     )
   }
 
   // Render!
-  render(App)
+  render(Layout)
 
   // Hot Module Replacement
   if (module && module.hot) {
@@ -39,6 +47,7 @@ if (typeof document !== 'undefined') {
   }
 } else {
   // SSR
-  const render = () => renderToString(<StaticRouter path={process.argv[2] || '/'} {...JSON.parse(process.argv[3])} />)
+  const render = () => renderToString(<Layout path={process.argv[2] || '/'} {...JSON.parse(process.argv[3])} />)
+  // Crystal captures the output via console
   console.log(render())
 }
