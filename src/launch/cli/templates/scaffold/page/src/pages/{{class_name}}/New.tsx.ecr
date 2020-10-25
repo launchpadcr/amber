@@ -1,0 +1,15 @@
+import React from 'react';
+import { RouteComponentProps } from '@reach/router';
+
+import <%= class_name %>Form from '../../components/<%= class_name %>/Form'
+
+interface New extends RouteComponentProps {
+  path: string
+}
+
+export default (props: New) => (
+  <>
+    <h1>New <%= class_name %></h1>
+    <Form {...props} />
+  </>
+);

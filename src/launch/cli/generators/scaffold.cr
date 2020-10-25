@@ -8,8 +8,8 @@ module Launch::CLI
     def initialize(name, fields)
       super(name, fields)
       @model = Model.new(name, fields)
-      @view = ScaffoldView.new(name, fields)
-      @controller = ScaffoldController.new(name, fields)
+      @view = ScaffoldPage.new(name, fields)
+      @controller = ApiController.new(name, fields)
     end
 
     def render(directory, **args)

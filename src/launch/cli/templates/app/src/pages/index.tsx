@@ -1,6 +1,6 @@
-import React from 'react'
-import HelloLaunch from '../components/HelloLaunch'
+import React from 'react';
+import HelloLaunch from '../components/HelloLaunch';
 
 export default () => (
   <HelloLaunch />
-)
+);

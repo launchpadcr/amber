@@ -6,7 +6,7 @@ class <%= class_name %> < Jennifer::Model::Base
   with_timestamps
   mapping(
     id: Primary32,
-<% @fields.reject{|f| f.hidden || f.reference? }.each do |field| -%>
+<% @fields.reject{ |f| f.hidden || f.reference? }.each do |field| -%>
     <%= field.name %>: {type: <%= field.cr_type %>?},
 <% end -%>
     created_at: {type: Time?},

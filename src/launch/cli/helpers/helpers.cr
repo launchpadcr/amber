@@ -60,6 +60,37 @@ module Launch::CLI::Helpers
     system("crystal tool format ./config/routes.cr")
   end
 
+  # TODO
+  def add_static_routes
+    routes_file = File.read("./static.config.js")
+    routes = routes_file.match(/\/\/ API - Please do not remove this comment/m)
+    if routes
+      replacement = "// API - Please do not remove this comment\n" +
+                    "    const { data: #{name_plural} } /* :{ data: #{class_name}[] } */ = await axios.get(\n" +
+                    "      'http://localhost:3001/#{name_plural}'\n" +
+                    "    )"
+      routes_file = routes_file.gsub(routes[0], replacement)
+    else
+      raise "StaticAPINotFoundError"
+    end
+
+    routes = routes_file.match(/\/\/ Routes - Please do not remove this comment/m)
+    if routes
+      replacement = "// Routes - Please do not remove this comment\n" +
+                    "      {\n" +
+                    "        path: '/#{name_plural}',\n" +
+                    "        getData: () => ({\n" +
+                    "          #{name_plural}\n" +
+                    "        }),\n" +
+                    "      },"
+      routes_file = routes_file.gsub(routes[0], replacement)
+    else
+      raise "StaticRoutesNotFoundError"
+    end
+
+    File.write("./static.config.js", routes_file)
+  end
+
   def add_dependencies(dependencies)
     app_file_path = "./config/application.cr"
     injection_marker = "# Start Generator Dependencies: Don't modify."
