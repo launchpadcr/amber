@@ -1,28 +1,3 @@
 class ApplicationController < Launch::Controller::Base
   LAYOUT = nil
-
-  macro render_js(props = nil, folder = __FILE__)
-    {% root = folder.split("src")[0] %}
-    output = IO::Memory.new
-    error = IO::Memory.new
-    command = "npx babel-node #{{{ root }}}src/pages/_app.js #{context.request.resource}"
-    {% if props %}
-      command += " '#{{{props}}.to_json}'"
-    {% end %}
-    Process.run(
-      command,
-      shell: true,
-      output: output,
-      error: error
-    )
-
-    raise "NodeRenderError - #{error}" if error.to_s.includes?("throw err")
-
-    html = File.read("#{Dir.current}/src/pages/index.html")
-    html = html.gsub("<div id=\"root\"></div>", "<div id=\"root\">#{output}</div>")
-    html.gsub(
-      "<script src=\"/dist/main.bundle.js\" charset=\"utf-8\"></script>",
-      "<script src=\"/dist/main.bundle.js\" charset=\"utf-8\" id='react-props' data-props='#{{{props}}.to_json}'></script>"
-    )
-  end
 end
