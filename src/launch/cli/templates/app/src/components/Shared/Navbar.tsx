@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from '@reach/router';
+import Link from 'next/link';
 
-export default () => (
+const Navbar = (): Jsx.Element => (
   <nav>
-    <Link to="/">Home</Link>
-    <Link to="/about">About</Link>
-    <Link to="/no_existant_url">404</Link>
+    <Link href="/">Home</Link>
   </nav>
 );
+
+export default Navbar;

@@ -1,6 +1,8 @@
 import React from 'react';
 import HelloLaunch from '../components/HelloLaunch';
 
-export default () => (
+const Home = () => (
   <HelloLaunch />
 );
+
+export default Home;

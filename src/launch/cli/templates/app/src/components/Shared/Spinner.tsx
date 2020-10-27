@@ -1,6 +1,8 @@
 import React from 'react';
 import '../../assets/styles/loader.scss';
 
-export default () => (
-  <div className="loader">LoadinG...</div>
+const Spinner = () => (
+  <div className="loader">Loading...</div>
 );
+
+export default Spinner;

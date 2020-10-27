@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
-import { Link, RouteComponentProps } from '@reach/router';
+import Link from 'next/link';
 import axios from 'axios';
 
 import <%= class_name %> from '../../types/<%= class_name %>';
-
-interface Form extends RouteComponentProps {
-  <%= @name %>?: <%= class_name %>
-  path?: string
-}
 
 interface ServerResponse {
   data: <%= class_name %>
 }
 
-export default (props: Form) => {
-  const { <%= @name %> } = props;
+const <%= class_name %>Form = ({ <%= @name %> }) => {
 <% @fields.reject{ |f| f.hidden }.each do |field| -%>
-  const [<%= field.name %>, set<%= field.name.capitalize %>] = useState('');
+  const [<%= field.name %>, set<%= field.name.capitalize %>] = useState(<%= @name %>.<%= field.name %>);
 <% end -%>
 
   const handleMessage = (res: ServerResponse) => {
@@ -26,20 +20,22 @@ export default (props: Form) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const data = {
-<% @fields.reject{ |f| f.hidden }.each do |field| -%>
-      <%= field.name %>,
-<% end -%>
+      <%= @name %>
     };
 
-    if (<%= @name %>) {
+<% @fields.reject{ |f| f.hidden }.each do |field| -%>
+      data.<%= @name %>.<%= field.name %> = <%= field.name %>
+<% end -%>
+
+    if (<%= @name %>.id) {
       axios.patch(
-        'http://localhost:3001/<%= name_plural %>',
-        data,
+        `http://localhost:3001/<%= name_plural %>/${<%= @name %>.id}`,
+        data.<%= @name %>,
       ).then((res: ServerResponse) => handleMessage(res));
     } else {
       axios.post(
         'http://localhost:3001/<%= name_plural %>',
-        data,
+        data.<%= @name %>,
       ).then((res: ServerResponse) => handleMessage(res));
     }
   };
@@ -92,8 +88,12 @@ export default (props: Form) => {
         </div>
 <% end -%>
         <input type="submit" value="Submit" className="btn btn-success btn-sm" />
-        <Link to="/<%= name_plural %>" className="btn btn-light btn-sm">Back</Link>
+        <Link href="/<%= name_plural %>">
+          <a className="btn btn-light btn-sm">Back</a>
+        </Link>
       </form>
     </>
   );
 };
+
+export default <%= class_name %>Form;

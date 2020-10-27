@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-export default () => (
+const HelloLaunch = () => (
   <div style={{ textAlign: 'center' }}>
     <div className="alert alert-primary" role="alert">
       A simple primary alert—check it out!
@@ -9,16 +9,20 @@ export default () => (
       Welcome to Launch.cr
     </h1>
     <p>
-      Learn{' '}
+      Learn
+      {' '}
       <a href="https://github.com/sw-yx/react-typescript-cheatsheet">
         React + TypeScript
       </a>
       <br />
       <br />
-      Learn{' '}
+      Learn
+      {' '}
       <a href="https://crystal-lang.org/reference/getting_started/">
         Crystal
       </a>
     </p>
   </div>
-)
+);
+
+export default HelloLaunch;

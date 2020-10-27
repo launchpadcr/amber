@@ -31,9 +31,13 @@
     ]
   },
   "exclude": [
-    "artifacts/**/*",
     "dist/**/*",
     "public/**/*",
     "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
   ]
 }

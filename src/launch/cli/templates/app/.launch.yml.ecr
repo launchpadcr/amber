@@ -32,7 +32,7 @@ watch:
 <%- unless @minimal -%>
   npm:
     build_commands:
-      - yarn install --loglevel=error
+      - npm install --loglevel=error
     run_commands:
-      - yarn run watch
+      - npm run watch
 <%- end -%>
