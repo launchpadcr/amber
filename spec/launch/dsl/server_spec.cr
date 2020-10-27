@@ -35,7 +35,7 @@ module Launch
         end
 
         pipeline :custom do
-          plug Pipe::CSRF.new
+          plug Pipe::Error.new
         end
       end
 
@@ -71,7 +71,7 @@ module Launch
         end
 
         pipeline :web do
-          plug Pipe::CSRF.new
+          plug Pipe::CORS.new
         end
       end
 
@@ -133,7 +133,7 @@ module Launch
           it "should have all pipes in pipeline" do
             server = pipeline_custom_multi_and_single
 
-            expected = [Pipe::Logger, Pipe::Error, Pipe::CSRF]
+            expected = [Pipe::Logger, Pipe::Error, Pipe::Error]
             plugs = server.handler.pipeline[:custom]?
             plugs.should_not be nil
             (plugs.map(&.class).should eq expected) if plugs
@@ -175,13 +175,13 @@ module Launch
 
             plugs = server.handler.pipeline[:web]?
             plugs.should_not be nil
-            (plugs.last?.should be_a Pipe::CSRF) if plugs
+            (plugs.last?.should be_a Pipe::CORS) if plugs
           end
 
           it "pipes should be in the same order when appending" do
             server = pipeline_multi_and_single
 
-            expected = [Pipe::CORS, Pipe::Logger, Pipe::Error]
+            expected = [Pipe::CORS, Pipe::Logger, Launch::Pipe::Error]
             plugs = server.handler.pipeline[:api]?
             plugs.should_not be nil
             (plugs.map(&.class).should eq expected) if plugs
@@ -190,7 +190,7 @@ module Launch
           it "pipes should be in the same order when prepending" do
             server = pipeline_multi_and_single
 
-            expected = [Pipe::Logger, Pipe::Error, Pipe::CSRF]
+            expected = [Pipe::Logger, Pipe::Error, Pipe::CORS]
             plugs = server.handler.pipeline[:web]?
             plugs.should_not be nil
             (plugs.map(&.class).should eq expected) if plugs

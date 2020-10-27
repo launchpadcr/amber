@@ -52,7 +52,6 @@ module Launch::Controller::Helpers
     end
 
     def redirect(controller)
-      set_flash(controller)
       url_path = encode_query_string(location, params)
       controller.response.headers[LOCATION_HEADER] = url_path
       controller.halt!(status, "Redirecting to #{url_path}")
@@ -69,10 +68,6 @@ module Launch::Controller::Helpers
       if (!location.url? || !location.chars.first == '/')
         raise Exceptions::Controller::Redirect.new(location)
       end
-    end
-
-    private def set_flash(controller)
-      controller.flash.merge!(flash.not_nil!) unless flash.nil?
     end
   end
 end

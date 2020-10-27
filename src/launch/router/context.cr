@@ -30,10 +30,6 @@ class HTTP::Server::Context
     @session ||= Launch::Router::Session::Store.new(cookies, Launch.settings.session).build
   end
 
-  def flash
-    @flash ||= Launch::Router::Flash.from_session(session.fetch(Launch::Pipe::Flash::PARAM_KEY, "{}"))
-  end
-
   def websocket?
     request.headers["Upgrade"]? == "websocket"
   end

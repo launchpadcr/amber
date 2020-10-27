@@ -105,10 +105,11 @@ class RenderController < Launch::Controller::Base
     render(path: "spec/support/sample/views", partial: "test/_form.slang")
   end
 
-  def render_with_flash
-    flash["error"] = "Displays error Message!"
-    render(path: "spec/support/sample/views", template: "test/flash.slang", layout: false)
-  end
+  # TODO
+  # def render_with_flash
+  #   flash["error"] = "Displays error Message!"
+  #   render(path: "spec/support/sample/views", template: "test/flash.slang", layout: false)
+  # end
 end
 
 class ResponsesController < Launch::Controller::Base

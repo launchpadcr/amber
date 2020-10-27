@@ -28,13 +28,13 @@ module Launch::CLI
       [camel_case, snake_case].each do |arg|
         MainCommand.run ["generate", "model", "-y", arg]
         filename = snake_case
-        jennifer_table_name = "#{camel_case} < ApplicationModel"
+        jennifer_class_name = "#{camel_case} < Jennifer::Model::Base"
         src_filepath = "./src/models/#{filename}.cr"
         spec_filepath = "./spec/models/#{filename}_spec.cr"
         File.exists?(src_filepath).should be_true
         File.exists?(spec_filepath).should be_true
         File.read(src_filepath).should contain class_definition_prefix
-        File.read(src_filepath).should contain jennifer_table_name
+        File.read(src_filepath).should contain jennifer_class_name
         File.read(spec_filepath).should contain spec_definition_prefix
         File.delete(src_filepath)
         File.delete(spec_filepath)
