@@ -17,10 +17,6 @@ module Launch::Controller
         RenderController.new(context).render_partial.should eq partial_only
       end
 
-      it "renders flash message" do
-        RenderController.new(context).render_with_flash
-      end
-
       it "renders html and layout from slang template" do
         RenderController.new(context).render_multiple_partials_in_layout.should eq layout_with_multiple_partials
       end
@@ -29,11 +25,11 @@ module Launch::Controller
         RenderController.new(context).render_with_layout.should eq layout_with_template
       end
 
-      it "renders a form with a csrf tag" do
-        result = RenderController.new(context).render_with_csrf
-        result.should contain "<form"
-        result.should contain "<input type=\"hidden\" name=\"_csrf\" value="
-      end
+      # it "renders a form with a csrf tag" do
+      #   result = RenderController.new(context).render_with_csrf
+      #   result.should contain "<form"
+      #   result.should contain "<input type=\"hidden\" name=\"_csrf\" value="
+      # end
     end
   end
 end

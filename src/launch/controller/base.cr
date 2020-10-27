@@ -5,12 +5,10 @@ require "./helpers/*"
 
 module Launch::Controller
   class Base
-    include Helpers::CSRF
     include Helpers::Redirect
     include Helpers::Render
     include Helpers::Responders
     include Helpers::Route
-    include Helpers::I18n
     include Callbacks
 
     protected getter context : HTTP::Server::Context
@@ -19,7 +17,6 @@ module Launch::Controller
     delegate :client_ip,
       :cookies,
       :delete?,
-      :flash,
       :format,
       :get?,
       :halt!,
