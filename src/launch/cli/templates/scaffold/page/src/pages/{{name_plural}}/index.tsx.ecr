@@ -9,8 +9,8 @@ interface ServerResponse {
   status: number
 }
 
-const <%= class_name %>Index = ({ all<%= name_plural.capitalize %> }: {all<%= name_plural.capitalize %>: <%= class_name %>[]}) => {
-  const [<%= name_plural %>, set<%= name_plural.capitalize %>] = useState<<%= class_name %>[]>(all<%= name_plural.capitalize %>);
+const <%= class_name %>Index = ({ all<%= name_plural.capitalize %> }: { all<%= name_plural.capitalize %>: <%= class_name %>[] }) => {
+  const [<%= name_plural %>, set<%= name_plural.capitalize %>] = useState(all<%= name_plural.capitalize %>);
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

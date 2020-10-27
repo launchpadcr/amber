@@ -8,7 +8,7 @@ interface ServerResponse {
   data: Pet
 }
 
-const <%= class_name %>Edit = ({ <%= @name %> }: {<%= @name %>: <%= class_name %>}) => (
+const <%= class_name %>Edit = ({ <%= @name %> }: { <%= @name %>: <%= class_name %> }) => (
   <>
     <h1>Edit <%= display_name %></h1>
     <<%= class_name %>Form <%= @name %>={<%= @name %>} />

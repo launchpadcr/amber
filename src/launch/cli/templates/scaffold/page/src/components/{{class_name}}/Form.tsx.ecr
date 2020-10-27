@@ -8,7 +8,7 @@ interface ServerResponse {
   data: <%= class_name %>
 }
 
-const <%= class_name %>Form = ({ <%= @name %> }) => {
+const <%= class_name %>Form = ({ <%= @name %> }: { <%= @name %>: <%= class_name %> }) => {
 <% @fields.reject{ |f| f.hidden }.each do |field| -%>
   const [<%= field.name %>, set<%= field.name.capitalize %>] = useState(<%= @name %>.<%= field.name %>);
 <% end -%>
@@ -20,11 +20,11 @@ const <%= class_name %>Form = ({ <%= @name %> }) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     const data = {
-      <%= @name %>
+      <%= @name %>,
     };
 
 <% @fields.reject{ |f| f.hidden }.each do |field| -%>
-      data.<%= @name %>.<%= field.name %> = <%= field.name %>
+    data.<%= @name %>.<%= field.name %> = <%= field.name %>;
 <% end -%>
 
     if (<%= @name %>.id) {
@@ -79,7 +79,7 @@ const <%= class_name %>Form = ({ <%= @name %> }) => {
 <% else -%>
           <input
             name="<%= field.name %>"
-            value={(<%= @name %> && <%= @name %>.<%= field.name %>) || undefined}
+            value={<%= field.name %>}
             placeholder="<%= field.name.capitalize %>"
             className="form-control"
             onChange={(e) => set<%= field.name.capitalize %>(e.target.value)}
