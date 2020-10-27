@@ -1,6 +1,6 @@
 class <%= class_name %>Controller < ApplicationController
   def index
-    <%= name_plural %> = <%= class_name %>.all
+    <%= name_plural %> = <%= class_name %>.all.to_a
     respond_with 200 do
       json <%= name_plural %>.to_json
     end

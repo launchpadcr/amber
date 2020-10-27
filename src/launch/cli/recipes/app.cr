@@ -18,7 +18,7 @@ module Launch::Recipes
     @template : String | Nil
     @recipe : String
 
-    def initialize(@name, @database = "pg", @language = "slang", @recipe = "base")
+    def initialize(@name, @database = "pg", @language = "ecr", @recipe = "base")
       @db_url = ""
       @wait_for = ""
       @database_name_base = generate_database_name_base

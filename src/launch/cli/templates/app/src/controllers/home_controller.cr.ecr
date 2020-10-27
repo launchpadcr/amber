@@ -1,5 +1,10 @@
 class HomeController < ApplicationController
   def index
-    render("index.<%= @language %>")
+    props = {
+      message: "Hello World"
+    }
+    respond_with 200 do
+      json props.to_json
+    end
   end
 end
