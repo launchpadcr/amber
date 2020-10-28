@@ -1,5 +1,4 @@
-require "kilt"
-require "kilt/ecr"
+require "ecr/macros"
 
 module Launch::Environment
   class Loader
@@ -27,12 +26,6 @@ module Launch::Environment
 
     private def credentials_settings_file
       @credentials ||= File.expand_path("./config/credentials.yml.enc")
-    end
-
-    private macro render_environment(filename)
-      String.build do |__kilt_io__|
-        {{Kilt::ENGINES["ecr"]}}("{{filename.id}}", "__kilt_io__")
-      end
     end
   end
 end
