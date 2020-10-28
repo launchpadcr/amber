@@ -2,11 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 
-import <%= class_name %> from '../../../types/<%= class_name %>';
-
-interface ServerResponse {
-  data: <%= class_name %>
-}
+import <%= class_name %>, { <%= class_name %>Response } from '../../../types/<%= class_name %>';
 
 const <%= class_name %>Show = ({ <%= @name %> }: { <%= @name %>: <%= class_name %> }) => {
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -17,7 +13,7 @@ const <%= class_name %>Show = ({ <%= @name %> }: { <%= @name %>: <%= class_name 
     axios.delete(
       `http://localhost:3001/<%= name_plural %>/${e.target.dataset.id}`,
       { data: {} },
-    ).then((res: ServerResponse) => {
+    ).then((res: <%= class_name %>Response) => {
       // TODO: set message
       console.log(res);
     });
@@ -58,11 +54,11 @@ export default <%= class_name %>Show;
 export async function getServerSideProps(context) {
   const props = { <%= @name %>: {} };
   await axios.get(`http://localhost:3001/<%= name_plural %>/${context.query.id}`)
-    .then((res: ServerResponse) => {
+    .then((res: <%= class_name %>Response) => {
       // console.log(res);
       props.<%= @name %> = res.data;
     });
   return {
-    props, // will be passed to the page component as props
+    props,
   };
 }

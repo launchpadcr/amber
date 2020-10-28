@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 
-import <%= class_name %> from '../../types/<%= class_name %>';
-
-interface ServerResponse {
-  data: <%= class_name %>[]
-  status: number
-}
+import <%= class_name %>, { <%= name_plural.capitalize %>Response } from '../../types/<%= class_name %>';
 
 const <%= class_name %>Index = ({ all<%= name_plural.capitalize %> }: { all<%= name_plural.capitalize %>: <%= class_name %>[] }) => {
   const [<%= name_plural %>, set<%= name_plural.capitalize %>] = useState(all<%= name_plural.capitalize %>);
@@ -22,7 +17,7 @@ const <%= class_name %>Index = ({ all<%= name_plural.capitalize %> }: { all<%= n
     axios.delete(
       `http://localhost:3001/<%= name_plural %>/${id}`,
       { data: {} },
-    ).then((res: ServerResponse) => {
+    ).then((res: <%= name_plural.capitalize %>Response) => {
       if (res.status === 204) {
         set<%= name_plural.capitalize %>(
           <%= name_plural %>.filter((<%= @name %>) => <%= @name %>.id !== +id),
@@ -97,7 +92,7 @@ export default <%= class_name %>Index;
 export async function getServerSideProps() {
   const props = { all<%= name_plural.capitalize %>: {} };
   await axios.get('http://localhost:3001/<%= name_plural %>')
-    .then((res: ServerResponse) => {
+    .then((res: <%= name_plural.capitalize %>Response) => {
       props.all<%= name_plural.capitalize %> = res.data;
     });
   return {

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const HelloLaunch = () => (
+const HelloLaunch = ({ message }: { message: string }) => (
   <div style={{ textAlign: 'center' }}>
     <div className="alert alert-primary" role="alert">
-      A simple primary alert—check it out!
+      {message}
     </div>
     <h1>
       Welcome to Launch.cr

@@ -2,18 +2,14 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 
-import <%= class_name %> from '../../types/<%= class_name %>';
-
-interface ServerResponse {
-  data: <%= class_name %>
-}
+import <%= class_name %>, { <%= class_name %>Response } from '../../types/<%= class_name %>';
 
 const <%= class_name %>Form = ({ <%= @name %> }: { <%= @name %>: <%= class_name %> }) => {
 <% @fields.reject{ |f| f.hidden }.each do |field| -%>
   const [<%= field.name %>, set<%= field.name.capitalize %>] = useState(<%= @name %>.<%= field.name %>);
 <% end -%>
 
-  const handleMessage = (res: ServerResponse) => {
+  const handleMessage = (res: <%= class_name %>Response) => {
     console.log(res);
   };
 
@@ -31,12 +27,12 @@ const <%= class_name %>Form = ({ <%= @name %> }: { <%= @name %>: <%= class_name 
       axios.patch(
         `http://localhost:3001/<%= name_plural %>/${<%= @name %>.id}`,
         data.<%= @name %>,
-      ).then((res: ServerResponse) => handleMessage(res));
+      ).then((res: <%= class_name %>Response) => handleMessage(res));
     } else {
       axios.post(
         'http://localhost:3001/<%= name_plural %>',
         data.<%= @name %>,
-      ).then((res: ServerResponse) => handleMessage(res));
+      ).then((res: <%= class_name %>Response) => handleMessage(res));
     }
   };
 
@@ -79,7 +75,7 @@ const <%= class_name %>Form = ({ <%= @name %> }: { <%= @name %>: <%= class_name 
 <% else -%>
           <input
             name="<%= field.name %>"
-            value={<%= field.name %>}
+            value={<%= field.name %> || ''}
             placeholder="<%= field.name.capitalize %>"
             className="form-control"
             onChange={(e) => set<%= field.name.capitalize %>(e.target.value)}
