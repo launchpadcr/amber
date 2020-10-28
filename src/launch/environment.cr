@@ -14,9 +14,6 @@ module Launch::Environment
 
     def self.settings
       @@settings ||= Loader.new(env.to_s, path).settings
-      # Dont rescue errors if environment yml doesn't exist.
-      # rescue Launch::Exceptions::Environment
-      #   @@settings = Settings.from_yaml("default: settings")
     end
 
     def self.credentials
