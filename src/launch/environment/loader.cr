@@ -12,8 +12,8 @@ module Launch::Environment
     def settings
       environment_files = Hash(String, String).new
       {{ run("./file_loader.cr", "config/environments").id }}
-      Settings.from_yaml(@environment_files[@environment])
-    rescue e : Exception
+      Settings.from_yaml(environment_files[@environment])
+    rescue e : KeyError
       raise Exceptions::Environment.new(@path, @environment)
     end
 
