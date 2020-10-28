@@ -8,7 +8,7 @@ def build_ecr_rendering_code
 
   str = ""
   files.each do |file|
-    str += "@environment_files[\"#{file.split(".")[0]}\"] = render_environment \"#{dir}/#{file}\"\n"
+    str += "environment_files[\"#{file.split(".")[0]}\"] = render_environment \"#{dir}/#{file}\"\n"
   end
   str
 end
