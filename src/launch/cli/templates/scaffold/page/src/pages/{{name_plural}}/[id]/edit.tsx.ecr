@@ -2,11 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 import <%= class_name %>Form from '../../../components/<%= class_name %>/Form';
-import <%= class_name %> from '../../../types/<%= class_name %>';
-
-interface ServerResponse {
-  data: Pet
-}
+import <%= class_name %>, { <%= class_name %>Response } from '../../../types/<%= class_name %>';
 
 const <%= class_name %>Edit = ({ <%= @name %> }: { <%= @name %>: <%= class_name %> }) => (
   <>
@@ -20,7 +16,7 @@ export default <%= class_name %>Edit;
 export async function getServerSideProps(context) {
   const props = { <%= @name %>: {} };
   await axios.get(`http://localhost:3001/<%= name_plural %>/${context.query.id}`)
-    .then((res: ServerResponse) => {
+    .then((res: <%= class_name %>Response) => {
       // console.log(res);
       props.<%= @name %> = res.data;
     });

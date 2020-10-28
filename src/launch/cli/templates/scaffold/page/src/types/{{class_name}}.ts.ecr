@@ -1,3 +1,5 @@
+import ServerResponse from './ServerResponse';
+
 export default interface <%= class_name %> {
   id: number
 <% @fields.reject{ |f| f.hidden }.each do |field| -%>
@@ -10,4 +12,12 @@ export default interface <%= class_name %> {
   created_at: string
   updated_at: string
   errors: string[]
-};
+}
+
+export interface <%= class_name %>Response extends ServerResponse {
+  data: <%= class_name %>
+}
+
+export interface <%= name_plural.capitalize %>Response extends ServerResponse {
+  data: <%= class_name %>[]
+}
