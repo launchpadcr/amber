@@ -1,12 +1,18 @@
+require "kilt"
+require "kilt/ecr"
+
 module Launch::Environment
   class Loader
+    property environment_files = Hash(String, String).new
+
     def initialize(@environment : Launch::Environment::EnvType = Launch.env.to_s,
                    @path : String = Launch.environment_path)
       raise Exceptions::Environment.new(@path, @environment) unless settings_file_exist?
     end
 
     def settings
-      Settings.from_yaml(settings_content.to_s)
+      {{ run("./file_loader.cr", "config/environments").id }}
+      Settings.from_yaml(@environment_files[Launch.env.to_s])
     end
 
     def credentials
@@ -33,6 +39,16 @@ module Launch::Environment
 
     private def settings_file_exist?
       File.exists?(yml_settings_file)
+    end
+
+    private macro render_environment(filename)
+      String.build do |__kilt_io__|
+        {% if Kilt::ENGINES["ecr"] %}
+          {{Kilt::ENGINES["ecr"]}}("{{filename.id}}", "__kilt_io__")
+        {% else %}
+          raise Kilt::Exception.new("Unsupported template engine for extension: \"" + {{ext}} + "\"")
+        {% end %}
+      end
     end
   end
 end

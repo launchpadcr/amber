@@ -1,4 +1,7 @@
-require "./environment/**"
+require "./environment/env"
+require "./environment/loader"
+require "./environment/logging"
+require "./environment/settings"
 require "./support/file_encryptor"
 
 module Launch::Environment
