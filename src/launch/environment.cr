@@ -5,7 +5,7 @@ require "./environment/settings"
 require "./support/file_encryptor"
 
 module Launch::Environment
-  alias EnvType = String | Symbol
+  alias EnvType = String
 
   macro included
     class_property path : String = "./config/environments/"
