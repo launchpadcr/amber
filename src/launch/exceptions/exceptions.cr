@@ -13,8 +13,20 @@ module Launch
     end
 
     class Environment < Exception
-      def initialize(path, environment)
-        super("Environment file not found for #{path}#{environment}")
+      def initialize(environment)
+        super(
+          "Environment file not found for #{environment}. " +
+          "Please ensure #{environment}.yml exists in config/environments"
+        )
+      end
+    end
+
+    class Credentials < Exception
+      def initialize
+        super(
+          "Credentials file not found. " +
+          "Please ensure credentials.yml.enc exists in config"
+        )
       end
     end
 

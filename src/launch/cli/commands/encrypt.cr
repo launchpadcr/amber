@@ -19,7 +19,7 @@ module Launch::CLI
         unencrypted_file = "config/credentials.yml"
 
         unless File.exists?(unencrypted_file) || File.exists?(encrypted_file)
-          raise Exceptions::Environment.new("./config/credentials.yml.", "enc")
+          raise Exceptions::Credentials.new
         end
 
         if File.exists?(encrypted_file)

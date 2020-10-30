@@ -6,7 +6,7 @@ module Launch::Environment
       ENV[LAUNCH_ENV] = @env
     end
 
-    def in?(env_list : Array(EnvType))
+    def in?(env_list : Array(String))
       env_list.any? { |env2| self == env2 }
     end
 
@@ -18,7 +18,7 @@ module Launch::Environment
       io << @env
     end
 
-    def ==(env2 : EnvType)
+    def ==(env2 : String)
       @env == env2.to_s.downcase
     end
 

@@ -8,10 +8,10 @@ describe Launch do
   describe ".env" do
     it "should return test" do
       Launch.env.test?.should be_truthy
-      Launch.env.==(:test).should be_truthy
-      Launch.env.==(:development).should be_falsey
-      Launch.env.!=(:development).should be_truthy
-      Launch.env.!=(:test).should be_falsey
+      Launch.env.==("test").should be_truthy
+      Launch.env.==("development").should be_falsey
+      Launch.env.!=("development").should be_truthy
+      Launch.env.!=("test").should be_falsey
     end
   end
 
@@ -19,13 +19,13 @@ describe Launch do
     context "when switching environments" do
       it "changes environment from TEST to PRODUCTION" do
         current_settings = Launch.settings
-        Launch.env = :production
+        Launch.env = "production"
         current_settings.port.should eq 3000
         Launch.settings.port.should eq 4000
       end
 
       it "sets Launch environment from yaml settings file" do
-        Launch.env = :development
+        Launch.env = "development"
         Launch.settings.name.should eq "development_settings"
       end
     end
@@ -34,7 +34,7 @@ describe Launch do
   describe Launch::Server do
     describe ".configure" do
       it "overrides current environment settings" do
-        Launch.env = :test
+        Launch.env = "test"
 
         Launch::Server.configure do |server|
           server.name = "Hello World App"
@@ -53,7 +53,7 @@ describe Launch do
       end
 
       it "retains environment.yml settings that haven't been overwritten" do
-        Launch.env = :test
+        Launch.env = "test"
         expected_session = {:key => "launch.session", :store => :signed_cookie, :expires => 0}
         expected_secrets = {
           "description" => "Store your test secrets credentials and settings here.",

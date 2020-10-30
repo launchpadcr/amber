@@ -36,14 +36,14 @@ module Launch::Environment
 
       it "returns true when the environment matches the argument(Symbol)" do
         launch_env = Env.new "staging"
-        result = launch_env == :staging
+        result = launch_env == "staging"
 
         result.should be_truthy
       end
 
       it "returns false when the environment matches the argument" do
         launch_env = Env.new "invalid"
-        result = launch_env == :staging
+        result = launch_env == "staging"
 
         result.should be_falsey
       end
@@ -63,20 +63,20 @@ module Launch::Environment
         it "returns true when array is passed in" do
           launch_env = Env.new "development"
 
-          symbols_result = launch_env.in? %i(development test production)
+          # symbols_result = launch_env.in? %i(development test production)
           strings_result = launch_env.in? %w(development test production)
 
-          symbols_result.should be_truthy
+          # symbols_result.should be_truthy
           strings_result.should be_truthy
         end
 
         it "returns true when tuple is passed in" do
           launch_env = Env.new "development"
 
-          symbols_result = launch_env.in?(:development, :test, :production)
+          # symbols_result = launch_env.in?(:development, :test, :production)
           strings_result = launch_env.in?("development", "test", "production")
 
-          symbols_result.should be_truthy
+          # symbols_result.should be_truthy
           strings_result.should be_truthy
         end
       end
@@ -85,10 +85,10 @@ module Launch::Environment
         it "returns false" do
           launch_env = Env.new "invalid"
 
-          symbols_result = launch_env.in? %w(development test production)
+          # symbols_result = launch_env.in? %w(development test production)
           strings_result = launch_env.in? %w(development test production)
 
-          symbols_result.should be_falsey
+          # symbols_result.should be_falsey
           strings_result.should be_falsey
         end
       end
