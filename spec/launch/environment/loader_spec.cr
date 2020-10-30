@@ -6,7 +6,7 @@ module Launch::Environment
 
     it "raises error for non existent environment settings" do
       expect_raises Launch::Exceptions::Environment do
-        Loader.new("unknown", "./spec/support/config/")
+        Loader.new("unknown", "./spec/support/config/").settings
       end
     end
 

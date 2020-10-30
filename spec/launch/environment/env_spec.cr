@@ -36,14 +36,14 @@ module Launch::Environment
 
       it "returns true when the environment matches the argument(Symbol)" do
         launch_env = Env.new "staging"
-        result = launch_env == :staging
+        result = launch_env == "staging"
 
         result.should be_truthy
       end
 
       it "returns false when the environment matches the argument" do
         launch_env = Env.new "invalid"
-        result = launch_env == :staging
+        result = launch_env == "staging"
 
         result.should be_falsey
       end
