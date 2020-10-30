@@ -6,9 +6,10 @@ class FileLoader
   @data : String
   @path : String
 
-  def initialize(@path : String)
+  def initialize(path : String)
     @data = ""
     @current_dir = Dir.current
+    @path = @current_dir + path
     @testing_path = @current_dir + "/spec/support/config"
   end
 
@@ -28,7 +29,7 @@ class FileLoader
       @path = @testing_path
       Dir.children(@testing_path).reject! { |f| ext(f) != "yml" }
     else
-      raise File::NotFoundError.new(@data["path"], file: ARGV[0])
+      raise File::NotFoundError.new(@path, file: ARGV[0])
     end
   end
 
