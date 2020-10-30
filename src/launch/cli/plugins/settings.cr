@@ -1,7 +1,7 @@
 require "yaml"
 require "yaml_mapping"
 
-module Amber::Plugins
+module Launch::Plugins
   class Settings
     alias RouteType = Hash(String, Hash(String, Array(String)))
 
