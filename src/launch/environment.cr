@@ -5,8 +5,6 @@ require "./environment/settings"
 require "./support/file_encryptor"
 
 module Launch::Environment
-  alias EnvType = String
-
   macro included
     class_property path : String = "./config/environments/"
     @@settings : Settings?
@@ -20,7 +18,7 @@ module Launch::Environment
       @@credentials ||= Loader.new(env.to_s, path).credentials
     end
 
-    def self.env=(env : EnvType)
+    def self.env=(env : String)
       @@env = Env.new(env.to_s)
       @@settings = Loader.new(env, path).settings
     end
