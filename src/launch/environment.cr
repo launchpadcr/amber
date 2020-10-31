@@ -6,7 +6,6 @@ require "./support/file_encryptor"
 
 module Launch::Environment
   macro included
-    class_property path : String = "./config/environments/"
     @@settings : Settings = Settings.new
     @@credentials : YAML::Any?
 
@@ -16,10 +15,6 @@ module Launch::Environment
 
     def self.credentials
       @@credentials ||= Loader.new(env.to_s, path).credentials
-    end
-
-    def self.env=(env : String)
-      @@env = Env.new(env.to_s)
     end
 
     def self.env

@@ -4,23 +4,24 @@ require "yaml_mapping"
 module Launch::Environment
   class Settings
     alias SettingValue = String | Int32 | Bool | Nil
+    alias CredentialsType = String | YAML::Any
 
     @smtp_settings : SMTPSettings?
+
+    getter database_url : String = ""
+    getter host : String = "0.0.0.0"
+    getter redis_url : String = "redis://localhost:6379"
+    getter secret_key_base : String = Random::Secure.urlsafe_base64(32)
+    getter ssl_key_file : String? = nil
+    getter ssl_cert_file : String? = nil
 
     setter session : Hash(String, Int32 | String)
     setter smtp : Hash(String, SettingValue)
 
-    property database_url : String = ""
-    property host : String = "0.0.0.0"
     property name : String = "Launch_App"
-    property port : Int32 = 3000
+    property port : Int32 = 3001
     property port_reuse : Bool = true
     property process_count : Int32 = 1
-    property redis_url : String? = "redis://localhost:6379"
-    property secret_key_base : String = Random::Secure.urlsafe_base64(32)
-    property secrets : Hash(String, String) = Hash(String, String).new
-    property ssl_key_file : String? = nil
-    property ssl_cert_file : String? = nil
     property logging : Logging::OptionsType = Logging::DEFAULTS
     property auto_reload : Bool = true
     property session : Hash(String, Int32 | String) = {
@@ -82,6 +83,30 @@ module Launch::Environment
 
     def logging
       @_logging ||= Logging.new(@logging)
+    end
+
+    def secret_key_base=(secret_key_base : CredentialsType)
+      @secret_key_base = secret_key_base.to_s
+    end
+
+    def host=(host : CredentialsType)
+      @host = host.to_s
+    end
+
+    def redis_url=(redis_url : CredentialsType)
+      @redis_url = redis_url.to_s
+    end
+
+    def ssl_key_file=(ssl_key_file : CredentialsType?)
+      @ssl_key_file = (ssl_key_file ? ssl_key_file.to_s : nil)
+    end
+
+    def ssl_cert_file=(ssl_cert_file : CredentialsType?)
+      @ssl_cert_file = (ssl_cert_file ? ssl_cert_file.to_s : nil)
+    end
+
+    def database_url=(database_url : CredentialsType)
+      @database_url = database_url.to_s
     end
   end
 end
