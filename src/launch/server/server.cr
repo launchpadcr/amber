@@ -3,7 +3,6 @@ require "./ssl"
 
 module Launch
   class Server
-    Log = ::Log.for(self)
     include Launch::DSL::Server
     alias WebSocketAdapter = WebSockets::Adapters::RedisAdapter.class | WebSockets::Adapters::MemoryAdapter.class
     property pubsub_adapter : WebSocketAdapter = WebSockets::Adapters::MemoryAdapter
@@ -70,18 +69,18 @@ module Launch
 
       Signal::INT.trap do
         Signal::INT.reset
-        Log.info { "Shutting down Launch" }
+        Log.info { "#{"Server".colorize(:green)} | Shutting down" }
         server.close
       end
 
       loop do
         begin
-          Log.info { "Server started in #{Launch.env.colorize(:yellow)}." }
-          Log.info { "Startup Time #{Time.local - time}".colorize(:white) }
+          Log.info { "#{"Environment".colorize(:green)} | #{Launch.env.colorize(:yellow)}." }
+          Log.info { "#{"Server".colorize(:green)} | Startup Time #{Time.local - time}".colorize(:white) }
           server.listen
           break
         rescue e : IO::Error
-          Log.error(exception: e) { "Restarting server..." }
+          Log.error(exception: e) { "#{"Server".colorize(:green)} | Restarting..." }
           sleep 1
         end
       end

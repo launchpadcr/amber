@@ -2,7 +2,7 @@ require "./helpers"
 
 module Sentry
   class ProcessRunner
-    Log = ::Log.for("watch")
+    # Log = ::Log.for("Watch")
 
     property processes = Hash(String, Array(Process)).new
     property process_name : String
@@ -198,7 +198,7 @@ module Sentry
     end
 
     private def log(task, msg, color = :light_gray)
-      Log.for(task.to_s).info { msg.colorize(color) }
+      Log.info { "#{task.colorize(:green)} | #{msg}" }
     end
   end
 end

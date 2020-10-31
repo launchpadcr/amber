@@ -1,6 +1,20 @@
 require "dexter"
 require "./*"
 
+class Object
+  def blank?
+    if self.responds_to?(:empty?)
+      self.empty?
+    else
+      false
+    end
+  end
+
+  def present?
+    !blank?
+  end
+end
+
 module Launch
   module Logger
     struct Formatter < Dexter::BaseFormatter
@@ -85,7 +99,7 @@ module Launch
 
       private class ExceptionFormatter < EntryFormatter
         def should_format? : Bool
-          entry.exception.present?
+          !!entry.exception
         end
 
         def write : Nil
@@ -125,7 +139,7 @@ module Launch
           io << "#{entry.message}" unless entry.message.empty?
 
           io << local_context.map do |key, value|
-            "#{Inflector.humanize(key)} #{colored(value.to_s)}".tap do
+            "#{Inflector.humanize(key).colorize(:green)} #{colored(value.to_s)}".tap do
               self.index += 1
             end
           end.join(". ")
