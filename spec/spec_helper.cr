@@ -11,7 +11,6 @@ APP_TEMPLATE_PATH = "../../src/launch/cli/templates/app"
 CURRENT_DIR       = Dir.current
 
 Launch.path = "./spec/support/config"
-Launch.env=(ENV["LAUNCH_ENV"])
 Launch.settings.redis_url = ENV["REDIS_URL"] if ENV["REDIS_URL"]?
 
 require "http"

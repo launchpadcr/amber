@@ -5,6 +5,35 @@ module Launch::Environment
   class Settings
     alias SettingValue = String | Int32 | Bool | Nil
 
+    @smtp_settings : SMTPSettings?
+
+    setter session : Hash(String, Int32 | String)
+    setter smtp : Hash(String, SettingValue)
+
+    property database_url : String = ""
+    property host : String = "0.0.0.0"
+    property name : String = "Launch_App"
+    property port : Int32 = 3000
+    property port_reuse : Bool = true
+    property process_count : Int32 = 1
+    property redis_url : String? = "redis://localhost:6379"
+    property secret_key_base : String = Random::Secure.urlsafe_base64(32)
+    property secrets : Hash(String, String) = Hash(String, String).new
+    property ssl_key_file : String? = nil
+    property ssl_cert_file : String? = nil
+    property logging : Logging::OptionsType = Logging::DEFAULTS
+    property auto_reload : Bool = true
+    property session : Hash(String, Int32 | String) = {
+      "key"     => "launch.session",
+      "store"   => "signed_cookie",
+      "expires" => 0,
+    }
+    property pipes : Hash(String, Hash(String, Hash(String, SettingValue))) = {
+      "static" => {
+        "headers" => {} of String => SettingValue,
+      },
+    }
+
     struct SMTPSettings
       property host = "127.0.0.1"
       property port = 1025
@@ -25,64 +54,14 @@ module Launch::Environment
       end
     end
 
-    setter session : Hash(String, Int32 | String)
-    property database_url : String,
-      host : String,
-      name : String,
-      port : Int32,
-      port_reuse : Bool,
-      process_count : Int32,
-      redis_url : String?,
-      secret_key_base : String,
-      secrets : Hash(String, String),
-      ssl_key_file : String,
-      ssl_cert_file : String,
-      logging : Logging::OptionsType
-
-    property? auto_reload : Bool
-
-    @smtp_settings : SMTPSettings?
+    def initialize
+      @smtp = Hash(String, SettingValue).new
+      @smtp["enabled"] = false
+    end
 
     def smtp : SMTPSettings
       @smtp_settings ||= SMTPSettings.from_hash @smtp
     end
-
-    YAML.mapping(
-      logging: {
-        type:    Logging::OptionsType,
-        default: Logging::DEFAULTS,
-      },
-      database_url: {type: String, default: ""},
-      host: {type: String, default: "localhost"},
-      name: {type: String, default: "Launch_App"},
-      port: {type: Int32, default: 3000},
-      port_reuse: {type: Bool, default: true},
-      process_count: {type: Int32, default: 1},
-      redis_url: {type: String?, default: nil},
-      secret_key_base: {type: String, default: Random::Secure.urlsafe_base64(32)},
-      secrets: {type: Hash(String, String), default: Hash(String, String).new},
-      session: {type: Hash(String, Int32 | String), default: {
-        "key" => "launch.session", "store" => "signed_cookie", "expires" => 0,
-      }},
-      ssl_key_file: {type: String?, default: nil},
-      ssl_cert_file: {type: String?, default: nil},
-      smtp: {
-        type:    Hash(String, SettingValue),
-        getter:  false,
-        default: Hash(String, SettingValue){
-          "enabled" => false,
-        },
-      },
-      auto_reload: {type: Bool, default: false},
-      pipes: {
-        type:    Hash(String, Hash(String, Hash(String, SettingValue))),
-        default: {
-          "static" => {
-            "headers" => {} of String => SettingValue,
-          },
-        },
-      }
-    )
 
     def session
       {
