@@ -13,10 +13,10 @@ module Launch
         status = context.response.status_code
         elapsed = elapsed_text(Time.utc - time)
         request(context, time, elapsed, status, :magenta)
-        log_other(context.request.headers, "headers")
-        log_other(context.request.cookies, "cookies", :light_blue)
-        log_other(context.params, "params", :light_blue)
-        log_other(context.session, "session", :light_yellow)
+        log_other(context.request.headers, "Headers")
+        log_other(context.request.cookies, "Cookies", :light_blue)
+        log_other(context.params, "Params", :light_blue)
+        log_other(context.session, "Session", :light_yellow)
         context
       end
 
@@ -25,10 +25,10 @@ module Launch
           str << "Status: #{http_status(status)} Method: #{method(context)}"
           str << " Pipeline: #{context.valve.colorize(color)} Format: #{context.format.colorize(color)}"
         end
-        log "Started #{time.colorize(color)}", "request", color
+        log "Started #{time.colorize(color)}", "Request", color
         log msg, "Request", color
-        log "Requested Url: #{context.requested_url.colorize(color)}", "request", color
-        log "Time Elapsed: #{elapsed.colorize(color)}", "request", color
+        log "Requested Url: #{context.requested_url.colorize(color)}", "Request", color
+        log "Time Elapsed: #{elapsed.colorize(color)}", "Request", color
       end
 
       private def log_other(other, name, color = :light_cyan)
