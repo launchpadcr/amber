@@ -54,7 +54,10 @@ module Launch
 
     def start
       time = Time.local
-      Log.info { "#{version.colorize(:light_cyan)} serving application \"#{settings.name.capitalize}\" at #{host_url.colorize(:light_cyan).mode(:underline)}" }
+      Log.info {
+        "#{version.colorize(:light_cyan)} serving application \"#{settings.name.capitalize}\"" +
+          " at #{host_url.colorize(:light_cyan).mode(:underline)}"
+      }
       handler.prepare_pipelines
       server = HTTP::Server.new(handler)
 
