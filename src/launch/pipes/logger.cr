@@ -57,10 +57,8 @@ module Launch
         end
       end
 
-      private def elapsed_text(elapsed)
-        millis = elapsed.total_milliseconds
-        return "#{millis.round(2)}ms" if millis >= 1
-        "#{(millis * 1000).round(2)}µs"
+      def elapsed(elapsed : Time::Span)
+        Launch::Logger::Helpers.elapsed_text(elapsed)
       end
 
       private def log(msg, prog, color = :white)

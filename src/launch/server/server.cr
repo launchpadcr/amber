@@ -76,7 +76,7 @@ module Launch
       loop do
         begin
           Log.info { "#{"Environment".colorize(:green)} | #{Launch.env.colorize(:yellow)}." }
-          Log.info { "#{"Server".colorize(:green)} | Startup Time #{Time.local - time}".colorize(:white) }
+          Log.info { "#{"Server".colorize(:green)} | Startup Time #{elapsed_text(Time.local - time)}".colorize(:white) }
           server.listen
           break
         rescue e : IO::Error
@@ -104,6 +104,10 @@ module Launch
 
     def settings
       Launch.settings
+    end
+
+    def elapsed_text(elapsed : Time::Span)
+      Launch::Logger::Helpers.elapsed_text(elapsed)
     end
   end
 end
