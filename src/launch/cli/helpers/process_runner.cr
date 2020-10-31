@@ -198,7 +198,7 @@ module Sentry
     end
 
     private def log(task, msg, color = :light_gray)
-      Log.info { "#{task.colorize(:green)} | #{msg}" }
+      Log.info { "#{task.colorize(:green)} - #{msg}" }
     end
 
     def elapsed(elapsed : Time::Span)

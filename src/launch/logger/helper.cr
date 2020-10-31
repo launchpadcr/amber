@@ -3,7 +3,7 @@ module Launch
     module Helpers
       def self.colored_http_status(status_code : Int32) : String
         status_name = Inflector.humanize(HTTP::Status.from_value?(status_code) || "")
-        message = "#{status_code} #{status_name}".colorize.bold
+        message = "#{status_code} #{status_name}".colorize
 
         case status_code
         when 200..299
