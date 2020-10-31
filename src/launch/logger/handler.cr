@@ -44,7 +44,7 @@ module Launch
         Log.dexter.info do
           {
             REQUEST_END_KEYS[:status]   => context.response.status_code,
-            REQUEST_END_KEYS[:duration] => LoggerHelpers.elapsed_text(duration),
+            REQUEST_END_KEYS[:duration] => Helpers.elapsed_text(duration),
           }
         end
       end
