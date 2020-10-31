@@ -6,6 +6,10 @@ module Launch
         message = "#{status_code} #{status_name}".colorize.bold
 
         case status_code
+        when 200..299
+          message.green
+        when 300..399
+          message.blue
         when 400..499
           message.yellow
         when 500..599
