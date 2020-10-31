@@ -11,7 +11,7 @@ module Launch
         time = Time.utc
         call_next(context)
         status = context.response.status_code
-        elapsed = elapsed_text(Time.utc - time)
+        elapsed = elapsed(Time.utc - time)
         request(context, time, elapsed, status, :magenta)
         log_other(context.request.headers, "Headers")
         log_other(context.request.cookies, "Cookies", :light_blue)
